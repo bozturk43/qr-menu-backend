@@ -542,9 +542,11 @@ export interface ApiRestaurantRestaurant extends Struct.CollectionTypeSchema {
     logo: Schema.Attribute.Media<'images'>;
     name: Schema.Attribute.String;
     owner: Schema.Attribute.Relation<
-      'oneToOne',
+      'manyToOne',
       'plugin::users-permissions.user'
     >;
+    plan: Schema.Attribute.Enumeration<['free', 'premium']> &
+      Schema.Attribute.DefaultTo<'free'>;
     publishedAt: Schema.Attribute.DateTime;
     selected_theme: Schema.Attribute.Relation<'manyToOne', 'api::theme.theme'>;
     slug: Schema.Attribute.UID<'name'>;
@@ -1044,7 +1046,6 @@ export interface PluginUsersPermissionsUser
   };
   options: {
     draftAndPublish: false;
-    timestamps: true;
   };
   attributes: {
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
@@ -1072,6 +1073,10 @@ export interface PluginUsersPermissionsUser
     provider: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     resetPasswordToken: Schema.Attribute.String & Schema.Attribute.Private;
+    restaurants: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::restaurant.restaurant'
+    >;
     role: Schema.Attribute.Relation<
       'manyToOne',
       'plugin::users-permissions.role'

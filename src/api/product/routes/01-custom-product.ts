@@ -13,5 +13,10 @@ export default {
       path: '/products/:id/safe-delete',
       handler: 'product.safeDelete',
     },
+    {
+      method: 'PUT',
+      path: '/products/batch-update-order',
+      handler: 'product.batchUpdateOrder',
+    },
   ],
 };

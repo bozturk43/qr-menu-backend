@@ -71,4 +71,26 @@ export default factories.createCoreController('api::product.product', ({ strapi 
       return ctx.internalServerError('Ürün silinirken bir hata oluştu.', { error: err });
     }
   },
+  async batchUpdateOrder(ctx: Context) {
+    const { products } = ctx.request.body as { products: { id: number; display_order: number }[] };
+
+    if (!products || !Array.isArray(products)) {
+      return ctx.badRequest('"products" bir dizi (array) olmalıdır.');
+    }
+
+    try {
+      await Promise.all(
+        products.map(product =>
+          strapi.entityService.update('api::product.product', product.id, {
+            data: {
+              display_order: product.display_order,
+            },
+          })
+        )
+      );
+      return ctx.send({ message: 'Ürün sıralaması başarıyla güncellendi.' });
+    } catch (err) {
+      return ctx.internalServerError('Sıralama güncellenirken bir hata oluştu.', { error: err });
+    }
+  },
 }));

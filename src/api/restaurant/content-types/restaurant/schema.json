@@ -1,0 +1,72 @@
+{
+  "kind": "collectionType",
+  "collectionName": "restaurants",
+  "info": {
+    "singularName": "restaurant",
+    "pluralName": "restaurants",
+    "displayName": "Restaurant"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name"
+    },
+    "logo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "owner": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "restaurants"
+    },
+    "subscription_status": {
+      "type": "enumeration",
+      "enum": [
+        "active",
+        "inactive",
+        "payment_failed"
+      ]
+    },
+    "subscription_expires_at": {
+      "type": "datetime"
+    },
+    "selected_theme": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::theme.theme",
+      "inversedBy": "restaurants"
+    },
+    "has_custom_design": {
+      "type": "boolean"
+    },
+    "custom_css": {
+      "type": "text"
+    },
+    "categories": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::category.category",
+      "mappedBy": "restaurant"
+    },
+    "plan": {
+      "type": "enumeration",
+      "default": "free",
+      "enum": [
+        "free",
+        "premium"
+      ]
+    }
+  }
+}

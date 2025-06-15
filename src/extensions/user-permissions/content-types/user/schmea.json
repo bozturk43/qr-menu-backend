@@ -1,0 +1,17 @@
+{
+  "collectionName": "up_users",
+  "info": {
+    "name": "user",
+    "description": "",
+    "displayName": "User"
+  },
+  "options": {},
+  "attributes": {
+    "restaurants": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::restaurant.restaurant",
+      "mappedBy": "owner"
+    }
+  }
+}

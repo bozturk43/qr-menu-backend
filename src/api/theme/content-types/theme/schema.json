@@ -1,0 +1,34 @@
+{
+  "kind": "collectionType",
+  "collectionName": "themes",
+  "info": {
+    "singularName": "theme",
+    "pluralName": "themes",
+    "displayName": "Theme"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "identifier": {
+      "type": "string"
+    },
+    "preview_image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "restaurants": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::restaurant.restaurant",
+      "mappedBy": "selected_theme"
+    }
+  }
+}

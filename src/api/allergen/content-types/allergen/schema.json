@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "allergens",
+  "info": {
+    "singularName": "allergen",
+    "pluralName": "allergens",
+    "displayName": "Allergen"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "products": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::product.product",
+      "mappedBy": "allergens"
+    }
+  }
+}

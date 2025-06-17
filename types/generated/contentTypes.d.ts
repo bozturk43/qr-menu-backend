@@ -524,6 +524,7 @@ export interface ApiRestaurantRestaurant extends Struct.CollectionTypeSchema {
     draftAndPublish: false;
   };
   attributes: {
+    background_color_override: Schema.Attribute.String;
     categories: Schema.Attribute.Relation<
       'oneToMany',
       'api::category.category'
@@ -547,13 +548,16 @@ export interface ApiRestaurantRestaurant extends Struct.CollectionTypeSchema {
     >;
     plan: Schema.Attribute.Enumeration<['free', 'premium']> &
       Schema.Attribute.DefaultTo<'free'>;
+    primary_color_override: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
+    secondary_color_override: Schema.Attribute.String;
     selected_theme: Schema.Attribute.Relation<'manyToOne', 'api::theme.theme'>;
     slug: Schema.Attribute.UID<'name'>;
     subscription_expires_at: Schema.Attribute.DateTime;
     subscription_status: Schema.Attribute.Enumeration<
       ['active', 'inactive', 'payment_failed']
     >;
+    text_color_override: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

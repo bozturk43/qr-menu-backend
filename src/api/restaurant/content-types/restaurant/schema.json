@@ -67,6 +67,18 @@
         "free",
         "premium"
       ]
+    },
+    "primary_color_override": {
+      "type": "string"
+    },
+    "background_color_override": {
+      "type": "string"
+    },
+    "text_color_override": {
+      "type": "string"
+    },
+    "secondary_color_override": {
+      "type": "string"
     }
   }
 }

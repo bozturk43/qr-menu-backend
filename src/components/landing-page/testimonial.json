@@ -1,0 +1,30 @@
+{
+  "collectionName": "components_landing_page_testimonials",
+  "info": {
+    "displayName": "Testimonial",
+    "icon": "user"
+  },
+  "options": {},
+  "attributes": {
+    "quote": {
+      "type": "text"
+    },
+    "author_name": {
+      "type": "string"
+    },
+    "author_title": {
+      "type": "string"
+    },
+    "author_photo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    }
+  },
+  "config": {}
+}

@@ -1,0 +1,34 @@
+{
+  "collectionName": "components_landing_page_feature_blocks",
+  "info": {
+    "displayName": "FeatureBlock",
+    "icon": "puzzle"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "layout_size": {
+      "type": "enumeration",
+      "enum": [
+        "small",
+        "large"
+      ]
+    }
+  },
+  "config": {}
+}

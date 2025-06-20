@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_landing_page_pt_feature_items",
+  "info": {
+    "displayName": "PTFeatureItem"
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

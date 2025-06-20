@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_landing_page_pricing_tiers",
+  "info": {
+    "displayName": "PricingTier",
+    "icon": "priceTag"
+  },
+  "options": {},
+  "attributes": {
+    "plan_name": {
+      "type": "string"
+    },
+    "price": {
+      "type": "string"
+    },
+    "billing_period": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "features": {
+      "type": "component",
+      "component": "landing-page.pt-feature-item",
+      "repeatable": true
+    },
+    "is_featured": {
+      "type": "boolean"
+    }
+  },
+  "config": {}
+}

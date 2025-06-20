@@ -489,6 +489,10 @@ export interface ApiLandingPageLandingPage extends Struct.SingleTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    feature_blocks: Schema.Attribute.Component<
+      'landing-page.feature-block',
+      true
+    >;
     features: Schema.Attribute.Component<'landing-page.feature', true>;
     hero_image: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios'
@@ -501,6 +505,10 @@ export interface ApiLandingPageLandingPage extends Struct.SingleTypeSchema {
       'api::landing-page.landing-page'
     > &
       Schema.Attribute.Private;
+    pricing_tiers: Schema.Attribute.Component<
+      'landing-page.pricing-tier',
+      true
+    >;
     publishedAt: Schema.Attribute.DateTime;
     testimonials: Schema.Attribute.Component<'landing-page.testimonial', true>;
     updatedAt: Schema.Attribute.DateTime;

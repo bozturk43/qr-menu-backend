@@ -36,6 +36,16 @@
       "type": "component",
       "component": "landing-page.testimonial",
       "repeatable": true
+    },
+    "feature_blocks": {
+      "type": "component",
+      "component": "landing-page.feature-block",
+      "repeatable": true
+    },
+    "pricing_tiers": {
+      "type": "component",
+      "component": "landing-page.pricing-tier",
+      "repeatable": true
     }
   }
 }

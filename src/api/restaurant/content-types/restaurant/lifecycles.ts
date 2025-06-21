@@ -29,6 +29,11 @@ export default {
     const ownerRelation = data.owner;
     let userId;
 
+    if (!data.plan || data.plan === 'free') {
+      data.plan = 'free';
+      data.subscription_status = 'active';
+    }
+
     if (data.name && !data.slug) {
       let baseSlug = slugify(data.name);
       let newSlug = baseSlug;
@@ -80,7 +85,6 @@ export default {
       where: {
         owner: { id: { $eq: userId } },
         plan: { $eq: 'free' },
-        publishedAt: { $notNull: true },
       },
     });
     // ÜCRETSİZ PLAN LOGIĞI

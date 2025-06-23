@@ -552,6 +552,10 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    variations: Schema.Attribute.Component<
+      'product-opts.variation-group',
+      true
+    >;
   };
 }
 
@@ -599,7 +603,39 @@ export interface ApiRestaurantRestaurant extends Struct.CollectionTypeSchema {
     subscription_status: Schema.Attribute.Enumeration<
       ['active', 'inactive', 'payment_failed']
     >;
+    tables: Schema.Attribute.Relation<'oneToMany', 'api::table.table'>;
     text_color_override: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiTableTable extends Struct.CollectionTypeSchema {
+  collectionName: 'tables';
+  info: {
+    displayName: 'Table';
+    pluralName: 'tables';
+    singularName: 'table';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::table.table'> &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    qr_code_identifier: Schema.Attribute.UID<'name'> &
+      Schema.Attribute.Required;
+    restaurant: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::restaurant.restaurant'
+    >;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1155,6 +1191,7 @@ declare module '@strapi/strapi' {
       'api::landing-page.landing-page': ApiLandingPageLandingPage;
       'api::product.product': ApiProductProduct;
       'api::restaurant.restaurant': ApiRestaurantRestaurant;
+      'api::table.table': ApiTableTable;
       'api::theme.theme': ApiThemeTheme;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;

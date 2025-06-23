@@ -69,6 +69,31 @@ export interface LandingPageTestimonial extends Struct.ComponentSchema {
   };
 }
 
+export interface ProductOptsOption extends Struct.ComponentSchema {
+  collectionName: 'components_product_opts_options';
+  info: {
+    displayName: 'Option';
+    icon: 'check';
+  };
+  attributes: {
+    name: Schema.Attribute.String;
+    price_adjustment: Schema.Attribute.Decimal;
+  };
+}
+
+export interface ProductOptsVariationGroup extends Struct.ComponentSchema {
+  collectionName: 'components_product_opts_variation_groups';
+  info: {
+    displayName: 'VariationGroup';
+    icon: 'layer';
+  };
+  attributes: {
+    options: Schema.Attribute.Component<'product-opts.option', true>;
+    title: Schema.Attribute.String;
+    type: Schema.Attribute.Enumeration<['single', 'multiple']>;
+  };
+}
+
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
@@ -77,6 +102,8 @@ declare module '@strapi/strapi' {
       'landing-page.pricing-tier': LandingPagePricingTier;
       'landing-page.pt-feature-item': LandingPagePtFeatureItem;
       'landing-page.testimonial': LandingPageTestimonial;
+      'product-opts.option': ProductOptsOption;
+      'product-opts.variation-group': ProductOptsVariationGroup;
     }
   }
 }

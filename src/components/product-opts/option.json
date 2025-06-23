@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_product_opts_options",
+  "info": {
+    "displayName": "Option",
+    "icon": "check"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "price_adjustment": {
+      "type": "decimal"
+    }
+  },
+  "config": {}
+}

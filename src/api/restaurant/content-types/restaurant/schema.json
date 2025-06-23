@@ -79,6 +79,12 @@
     },
     "secondary_color_override": {
       "type": "string"
+    },
+    "tables": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::table.table",
+      "mappedBy": "restaurant"
     }
   }
 }

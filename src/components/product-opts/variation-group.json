@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_product_opts_variation_groups",
+  "info": {
+    "displayName": "VariationGroup",
+    "icon": "layer"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "single",
+        "multiple"
+      ]
+    },
+    "options": {
+      "type": "component",
+      "component": "product-opts.option",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

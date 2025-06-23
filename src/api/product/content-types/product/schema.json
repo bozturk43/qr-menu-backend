@@ -45,6 +45,11 @@
     },
     "display_order": {
       "type": "integer"
+    },
+    "variations": {
+      "type": "component",
+      "component": "product-opts.variation-group",
+      "repeatable": true
     }
   }
 }

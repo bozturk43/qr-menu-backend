@@ -18,7 +18,7 @@
     "qr_code_identifier": {
       "type": "uid",
       "targetField": "name",
-      "required": true
+      "required": false
     },
     "restaurant": {
       "type": "relation",

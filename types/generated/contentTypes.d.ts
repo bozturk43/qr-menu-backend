@@ -630,8 +630,7 @@ export interface ApiTableTable extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     name: Schema.Attribute.String & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
-    qr_code_identifier: Schema.Attribute.UID<'name'> &
-      Schema.Attribute.Required;
+    qr_code_identifier: Schema.Attribute.UID<'name'>;
     restaurant: Schema.Attribute.Relation<
       'manyToOne',
       'api::restaurant.restaurant'

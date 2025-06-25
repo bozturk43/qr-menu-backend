@@ -85,6 +85,12 @@
       "relation": "oneToMany",
       "target": "api::table.table",
       "mappedBy": "restaurant"
+    },
+    "orders": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::order.order",
+      "mappedBy": "restaurant"
     }
   }
 }

@@ -1,0 +1,24 @@
+{
+  "kind": "collectionType",
+  "collectionName": "print_stations",
+  "info": {
+    "singularName": "print-station",
+    "pluralName": "print-stations",
+    "displayName": "Print Station"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "categories": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::category.category",
+      "mappedBy": "print_station"
+    }
+  }
+}

@@ -35,6 +35,12 @@
       "relation": "oneToMany",
       "target": "api::product.product",
       "mappedBy": "category"
+    },
+    "print_station": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::print-station.print-station",
+      "inversedBy": "categories"
     }
   }
 }

@@ -543,6 +543,8 @@ export interface ApiOrderItemOrderItem extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     order: Schema.Attribute.Relation<'manyToOne', 'api::order.order'>;
+    order_item_status: Schema.Attribute.Enumeration<['open', 'paid']> &
+      Schema.Attribute.DefaultTo<'open'>;
     product: Schema.Attribute.Relation<'manyToOne', 'api::product.product'>;
     product_name: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;

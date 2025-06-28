@@ -25,7 +25,7 @@ export default factories.createCoreController('api::order.order', ({ strapi }) =
         const { tableIdentifier, items, totalPrice, notes } = ctx.request.body as SubmitOrderPayload;
 
         try {
-            console.log("masa tanımlayıcı",tableIdentifier);
+            console.log("masa tanımlayıcı", tableIdentifier);
             // 1. Bu masaya ait, hala 'open' (açık) bir sipariş var mı diye kontrol et
             const table = await strapi.db.query('api::table.table').findOne({
                 where: { qr_code_identifier: tableIdentifier },
@@ -95,6 +95,172 @@ export default factories.createCoreController('api::order.order', ({ strapi }) =
         } catch (err) {
             console.error('Order submission error:', err);
             return ctx.internalServerError('Sipariş oluşturulurken bir hata oluştu.');
+        }
+    },
+    async findOpenByRestaurant(ctx: Context) {
+        const { id: userId } = ctx.state.user; // İstek yapan kullanıcının ID'si
+        const { restaurantId } = ctx.params; // URL'den gelen restoran ID'si
+
+        try {
+            // 1. Önce, kullanıcının bu restorana erişim yetkisi var mı diye kontrol et
+            const restaurant = await strapi.entityService.findOne('api::restaurant.restaurant', restaurantId, {
+                populate: ['owner'],
+            });
+
+            if (!restaurant) {
+                return ctx.notFound('Restoran bulunamadı.');
+            }
+            // @ts-ignore
+            if (restaurant.owner?.id !== userId) {
+                return ctx.unauthorized('Bu restoranın siparişlerini görmeye yetkiniz yok.');
+            }
+
+            // 2. Yetki kontrolü başarılıysa, o restorana ait açık siparişleri getir
+            const openOrders = await strapi.db.query('api::order.order').findMany({
+                where: {
+                    restaurant: { id: { $eq: restaurantId } },
+                    order_status: { $eq: 'open' },
+                },
+                populate: {
+                    restaurant: true,
+                    table: true, // Her siparişin masa bilgisini getir
+                    order_items: { // Her siparişin kalemlerini getir
+                        populate: {
+                            product: true, // Her kalemin ürün bilgisini de getir (opsiyonel)
+                            selected_variations: true
+                        }
+                    },
+                },
+                orderBy: { createdAt: 'desc' }, // En yeni siparişler en üstte olsun
+            });
+
+            // 3. Veriyi frontend'e gönder
+            return this.transformResponse(openOrders);
+
+        } catch (err) {
+            console.error('Error in findOpenByRestaurant:', err);
+            return ctx.internalServerError('Açık siparişler getirilirken bir hata oluştu.');
+        }
+    },
+    async addItems(ctx: Context) {
+        const { id: userId } = ctx.state.user;
+        const { orderId } = ctx.params;
+        // Frontend'den sadece eklenecek ürün kalemlerinin bir dizisini bekliyoruz
+        const { items } = ctx.request.body as { items: any[] };
+
+        try {
+            // 1. Önce, siparişin sahibini doğrula
+            const orderToUpdate = await strapi.db.query('api::order.order').findOne({
+                where: { id: orderId },
+                populate: { restaurant: { populate: ['owner'] } },
+            });
+
+            if (!orderToUpdate) return ctx.notFound('Sipariş bulunamadı.');
+            // @ts-ignore
+            if (orderToUpdate.restaurant?.owner?.id !== userId) return ctx.unauthorized('Bu siparişe ürün ekleme yetkiniz yok.');
+
+            // 2. Gelen her bir yeni ürün kalemi için veritabanında kayıt oluştur
+            await Promise.all(
+                items.map(item =>
+                    strapi.entityService.create('api::order-item.order-item', {
+                        data: {
+                            product_name: item.productName,
+                            quantity: item.quantity,
+                            total_price: item.totalPrice,
+                            selected_variations: item.variations,
+                            order: orderId, // Ana siparişe bağlıyoruz
+                            product: item.productId,
+                            is_printed: false,
+                        },
+                    })
+                )
+            );
+
+            // 3. Ana siparişin toplam tutarını yeniden hesaplat
+            const finalOrder = await strapi.service('api::order.order').recalculateOrderTotal(orderId);
+
+            // TODO: WebSocket ile 'order_updated' olayı yayınla
+
+            return this.transformResponse(finalOrder);
+
+        } catch (err) {
+            console.error('addItems sırasında hata:', err);
+            return ctx.internalServerError('Siparişe ürün eklenirken bir hata oluştu.');
+        }
+    },
+    async payItems(ctx: Context) {
+        const { orderId } = ctx.params;
+        const { itemIds } = ctx.request.body as { itemIds: number[] };
+
+        // TODO: Sahiplik kontrolü eklenebilir
+
+        try {
+            // Gelen ID listesindeki tüm order-item'ların durumunu 'paid' yap
+            await strapi.db.query('api::order-item.order-item').updateMany({
+                where: { id: { $in: itemIds } },
+                data: { order_item_status: 'paid' },
+            });
+
+            const updatedOrder = await strapi.entityService.findOne('api::order.order', orderId, { populate: { order_items: true, table: true } });
+            return this.transformResponse(updatedOrder);
+
+        } catch (err) {
+            console.error('payItems sırasında hata:', err);
+            return ctx.internalServerError('Adisyon kalemi ödeme sırasında hata oluştu !');
+        }
+    },
+    async closeOrder(ctx: Context) {
+        const { id: userId } = ctx.state.user;
+        const { orderId } = ctx.params;
+
+        try {
+            // Sahiplik kontrolü
+            const orderToClose = await strapi.db.query('api::order.order').findOne({
+                where: { id: orderId },
+                populate: { restaurant: { populate: ['owner'] } },
+            });
+
+            if (!orderToClose) {
+                return ctx.notFound('Kapatılacak sipariş bulunamadı.');
+            }
+            // @ts-ignore
+            if (orderToClose.restaurant?.owner?.id !== userId) {
+                return ctx.unauthorized('Bu siparişi kapatma yetkiniz yok.');
+            }
+
+            // --- YENİ MANTIK ---
+
+            // 1. Önce bu siparişe ait, durumu 'open' olan tüm kalemleri bul.
+            const itemsToPay = await strapi.db.query('api::order-item.order-item').findMany({
+                where: {
+                    order: { id: { $eq: orderId } },
+                    order_item_status: { $eq: 'open' }
+                }
+            });
+
+            // 2. Bulunan her bir kalemi, bir döngü içinde tek tek 'paid' olarak güncelle.
+            if (itemsToPay && itemsToPay.length > 0) {
+                await Promise.all(
+                    itemsToPay.map(item => strapi.entityService.update(
+                        'api::order-item.order-item',
+                        item.id,
+                        { data: { order_item_status: 'paid' } }
+                    ))
+                );
+            }
+
+            // 3. Şimdi ana siparişin durumunu 'paid' olarak güncelle.
+            const closedOrder = await strapi.entityService.update('api::order.order', orderId, {
+                data: {
+                    order_status: 'paid',
+                },
+            });
+
+            return ctx.send({ message: 'Adisyon başarıyla kapatıldı.', data: closedOrder });
+
+        } catch (err) {
+            console.error('closeOrder sırasında hata:', err);
+            return ctx.internalServerError('Adisyon kapatılırken bir hata oluştu.');
         }
     }
 }));

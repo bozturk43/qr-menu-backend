@@ -38,6 +38,14 @@
     },
     "total_price": {
       "type": "decimal"
+    },
+    "order_item_status": {
+      "type": "enumeration",
+      "default": "open",
+      "enum": [
+        "open",
+        "paid"
+      ]
     }
   }
 }

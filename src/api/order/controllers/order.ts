@@ -190,7 +190,7 @@ export default factories.createCoreController('api::order.order', ({ strapi }) =
     },
     async payItems(ctx: Context) {
         const { orderId } = ctx.params;
-        const { itemIds } = ctx.request.body as { itemIds: number[] };
+        const { itemIds, paymentMethod } = ctx.request.body as { itemIds: number[], paymentMethod: 'cash' | 'card' | 'order' };
 
         // TODO: Sahiplik kontrolü eklenebilir
 
@@ -198,7 +198,7 @@ export default factories.createCoreController('api::order.order', ({ strapi }) =
             // Gelen ID listesindeki tüm order-item'ların durumunu 'paid' yap
             await strapi.db.query('api::order-item.order-item').updateMany({
                 where: { id: { $in: itemIds } },
-                data: { order_item_status: 'paid' },
+                data: { order_item_status: 'paid', payment_method: paymentMethod },
             });
 
             const updatedOrder = await strapi.entityService.findOne('api::order.order', orderId, { populate: { order_items: true, table: true } });
@@ -212,7 +212,9 @@ export default factories.createCoreController('api::order.order', ({ strapi }) =
     async closeOrder(ctx: Context) {
         const { id: userId } = ctx.state.user;
         const { orderId } = ctx.params;
+        const { paymentMethod } = ctx.request.body as { paymentMethod: 'cash' | 'card' | 'other' };
 
+        console.log(paymentMethod);
         try {
             // Sahiplik kontrolü
             const orderToClose = await strapi.db.query('api::order.order').findOne({
@@ -244,7 +246,7 @@ export default factories.createCoreController('api::order.order', ({ strapi }) =
                     itemsToPay.map(item => strapi.entityService.update(
                         'api::order-item.order-item',
                         item.id,
-                        { data: { order_item_status: 'paid' } }
+                        { data: { order_item_status: 'paid',payment_method:paymentMethod } }
                     ))
                 );
             }

@@ -46,6 +46,14 @@
         "open",
         "paid"
       ]
+    },
+    "payment_method": {
+      "type": "enumeration",
+      "enum": [
+        "cash",
+        "card",
+        "other"
+      ]
     }
   }
 }

@@ -29,5 +29,10 @@ export default {
       path: '/orders/:orderId/close',
       handler: 'order.closeOrder',
     },
+    {
+      method: 'PUT',
+      path: '/orders/:orderId/apply-discount',
+      handler: 'order.applyDiscount',
+    },
   ],
 };

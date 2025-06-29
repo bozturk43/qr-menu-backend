@@ -177,7 +177,7 @@ export default factories.createCoreController('api::order.order', ({ strapi }) =
             );
 
             // 3. Ana siparişin toplam tutarını yeniden hesaplat
-            const finalOrder = await strapi.service('api::order.order').recalculateOrderTotal(orderId);
+            const finalOrder = await strapi.service('api::order.order').recalculateAndApplyDiscounts(orderId);
 
             // TODO: WebSocket ile 'order_updated' olayı yayınla
 
@@ -246,7 +246,7 @@ export default factories.createCoreController('api::order.order', ({ strapi }) =
                     itemsToPay.map(item => strapi.entityService.update(
                         'api::order-item.order-item',
                         item.id,
-                        { data: { order_item_status: 'paid',payment_method:paymentMethod } }
+                        { data: { order_item_status: 'paid', payment_method: paymentMethod } }
                     ))
                 );
             }
@@ -264,5 +264,29 @@ export default factories.createCoreController('api::order.order', ({ strapi }) =
             console.error('closeOrder sırasında hata:', err);
             return ctx.internalServerError('Adisyon kapatılırken bir hata oluştu.');
         }
-    }
+    },
+    async applyDiscount(ctx: Context) {
+        const { orderId } = ctx.params;
+        const { discount_type, discount_value } = ctx.request.body as { discount_type: "percentage" | "fixed_amount", discount_value: number };
+        // TODO: Sahiplik kontrolü eklenebilir
+
+        try {
+            // 1. Ana siparişe indirim bilgilerini kaydet
+            await strapi.entityService.update('api::order.order', orderId, {
+                data: {
+                    discount_type: discount_type,
+                    discount_value: discount_value,
+                },
+            });
+
+            // 2. Merkezi hesaplama servisini çağırarak tüm fiyatları güncelle
+            const finalOrder = await strapi.service('api::order.order').recalculateAndApplyDiscounts(orderId);
+
+            return this.transformResponse(finalOrder);
+
+        } catch (err) {
+            console.error('applyDiscount sırasında hata:', err);
+            return ctx.internalServerError('İndirim uygulanırken bir hata oluştu.');
+        }
+    },
 }));

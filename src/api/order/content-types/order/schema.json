@@ -43,6 +43,16 @@
       "relation": "oneToMany",
       "target": "api::order-item.order-item",
       "mappedBy": "order"
+    },
+    "discount_type": {
+      "type": "enumeration",
+      "enum": [
+        "percentage",
+        "fixed_amount"
+      ]
+    },
+    "discount_value": {
+      "type": "decimal"
     }
   }
 }

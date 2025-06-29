@@ -54,6 +54,9 @@
         "card",
         "other"
       ]
+    },
+    "discounted_price": {
+      "type": "decimal"
     }
   }
 }

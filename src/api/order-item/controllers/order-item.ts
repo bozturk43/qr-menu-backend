@@ -31,7 +31,7 @@ export default factories.createCoreController('api::order-item.order-item', ({ s
       const deletedEntry = await strapi.entityService.delete('api::order-item.order-item', orderItemId);
 
       // 4. Ana siparişin toplam tutarını yeniden hesapla
-      await strapi.service('api::order.order').recalculateOrderTotal(parentOrderId);
+      await strapi.service('api::order.order').recalculateAndApplyDiscounts(parentOrderId);
 
       return this.transformResponse(deletedEntry);
     } catch (err) {

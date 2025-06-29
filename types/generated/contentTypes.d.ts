@@ -693,10 +693,15 @@ export interface ApiRestaurantRestaurant extends Struct.CollectionTypeSchema {
       'oneToMany',
       'api::category.category'
     >;
+    color_category_title: Schema.Attribute.String;
+    color_product_description: Schema.Attribute.String;
+    color_product_title: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     custom_css: Schema.Attribute.Text;
+    font_body: Schema.Attribute.String;
+    font_title: Schema.Attribute.String;
     has_custom_design: Schema.Attribute.Boolean;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -711,12 +716,14 @@ export interface ApiRestaurantRestaurant extends Struct.CollectionTypeSchema {
       'manyToOne',
       'plugin::users-permissions.user'
     >;
-    plan: Schema.Attribute.Enumeration<['free', 'premium']> &
+    plan: Schema.Attribute.Enumeration<['free', 'pro', 'bussiness']> &
       Schema.Attribute.DefaultTo<'free'>;
     primary_color_override: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     secondary_color_override: Schema.Attribute.String;
     selected_theme: Schema.Attribute.Relation<'manyToOne', 'api::theme.theme'>;
+    show_restaurant_name: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<true>;
     slug: Schema.Attribute.UID<'name'>;
     subscription_expires_at: Schema.Attribute.DateTime;
     subscription_status: Schema.Attribute.Enumeration<

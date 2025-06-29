@@ -75,7 +75,7 @@ export default {
     }
 
     // Eğer oluşturulmak istenen restoran 'premium' ise, hiçbir kontrol yapma ve izin ver.
-    if (data.plan === 'premium') {
+    if (data.plan === 'pro') {
       return;
     }
 

@@ -65,7 +65,8 @@
       "default": "free",
       "enum": [
         "free",
-        "premium"
+        "pro",
+        "bussiness"
       ]
     },
     "primary_color_override": {
@@ -91,6 +92,25 @@
       "relation": "oneToMany",
       "target": "api::order.order",
       "mappedBy": "restaurant"
+    },
+    "show_restaurant_name": {
+      "type": "boolean",
+      "default": true
+    },
+    "font_title": {
+      "type": "string"
+    },
+    "font_body": {
+      "type": "string"
+    },
+    "color_category_title": {
+      "type": "string"
+    },
+    "color_product_title": {
+      "type": "string"
+    },
+    "color_product_description": {
+      "type": "string"
     }
   }
 }

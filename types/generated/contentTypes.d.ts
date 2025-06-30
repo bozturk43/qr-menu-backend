@@ -696,12 +696,14 @@ export interface ApiRestaurantRestaurant extends Struct.CollectionTypeSchema {
     color_category_title: Schema.Attribute.String;
     color_product_description: Schema.Attribute.String;
     color_product_title: Schema.Attribute.String;
+    color_restaurant_title: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     custom_css: Schema.Attribute.Text;
-    font_body: Schema.Attribute.String;
-    font_title: Schema.Attribute.String;
+    font_category_title: Schema.Attribute.String;
+    font_product_title: Schema.Attribute.String;
+    font_restaurant_title: Schema.Attribute.String;
     has_custom_design: Schema.Attribute.Boolean;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<

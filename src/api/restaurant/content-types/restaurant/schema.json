@@ -69,6 +69,10 @@
         "bussiness"
       ]
     },
+    "show_restaurant_name": {
+      "type": "boolean",
+      "default": true
+    },
     "primary_color_override": {
       "type": "string"
     },
@@ -79,6 +83,27 @@
       "type": "string"
     },
     "secondary_color_override": {
+      "type": "string"
+    },
+    "font_restaurant_title": {
+      "type": "string"
+    },
+    "font_category_title": {
+      "type": "string"
+    },
+    "font_product_title": {
+      "type": "string"
+    },
+    "color_category_title": {
+      "type": "string"
+    },
+    "color_product_title": {
+      "type": "string"
+    },
+    "color_product_description": {
+      "type": "string"
+    },
+    "color_restaurant_title": {
       "type": "string"
     },
     "tables": {
@@ -92,25 +117,6 @@
       "relation": "oneToMany",
       "target": "api::order.order",
       "mappedBy": "restaurant"
-    },
-    "show_restaurant_name": {
-      "type": "boolean",
-      "default": true
-    },
-    "font_title": {
-      "type": "string"
-    },
-    "font_body": {
-      "type": "string"
-    },
-    "color_category_title": {
-      "type": "string"
-    },
-    "color_product_title": {
-      "type": "string"
-    },
-    "color_product_description": {
-      "type": "string"
     }
   }
 }

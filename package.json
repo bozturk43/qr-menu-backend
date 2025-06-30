@@ -1,6 +1,6 @@
 {
   "name": "qr-menu-backend-yeni",
-  "version": "0.1.16",
+  "version": "0.1.17",
   "private": true,
   "description": "A Strapi application",
   "scripts": {
@@ -20,6 +20,7 @@
     "@strapi/provider-upload-cloudinary": "^5.16.1",
     "@strapi/strapi": "5.15.1",
     "better-sqlite3": "11.3.0",
+    "pg-connection-string": "^2.9.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.0.0",

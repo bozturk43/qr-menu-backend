@@ -71,6 +71,12 @@
       "relation": "oneToMany",
       "target": "api::restaurant.restaurant",
       "mappedBy": "owner"
+    },
+    "user_assets": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::user-asset.user-asset",
+      "mappedBy": "users_permissions_user"
     }
   }
 }

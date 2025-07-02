@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "stock_images",
+  "info": {
+    "singularName": "stock-image",
+    "pluralName": "stock-images",
+    "displayName": "StockImage"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images",
+        "videos"
+      ]
+    },
+    "tags": {
+      "type": "text"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "user_assets",
+  "info": {
+    "singularName": "user-asset",
+    "pluralName": "user-assets",
+    "displayName": "UserAsset"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "users_permissions_user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "user_assets"
+    },
+    "images": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "videos"
+      ]
+    }
+  }
+}
